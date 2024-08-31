@@ -11,7 +11,14 @@ namespace PokemonReviewApp.Repository
         {
             _context = context;
         }
-        public Owner GetOwner(int ownerId)
+
+		public bool CreateOwner(Owner owner)
+		{
+			_context.Add(owner);
+			return Save();
+		}
+
+		public Owner GetOwner(int ownerId)
 		{
 			return _context.Owners.Where(o => o.Id == ownerId).FirstOrDefault();
 		}
@@ -26,14 +33,20 @@ namespace PokemonReviewApp.Repository
 			return _context.Owners.ToList();
 		}
 
-		public ICollection<Pokemon> GetPokemonByOwnerId(int ownerId)
+		public ICollection<Pokemon> GetPokemonByOwner(int ownerId)
 		{
-			return _context.PokemonOwners.Where(p=>p.Owner.Id == ownerId).Select(p=>p.Pokemon).ToList();
+			return _context.PokemonOwners.Where(p => p.Owner.Id == ownerId).Select(p => p.Pokemon).ToList();
 		}
 
 		public bool OwnerExists(int ownerId)
 		{
 			return _context.Owners.Any(o=>o.Id == ownerId);
+		}
+
+		public bool Save()
+		{
+			var saved = _context.SaveChanges();
+			return saved > 0 ? true : false;
 		}
 	}
 }

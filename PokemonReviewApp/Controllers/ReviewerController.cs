@@ -38,7 +38,7 @@ namespace PokemonReviewApp.Controllers
 			if (!_reviewerRepository.ReviewerExists(reviewerId))
 				return NotFound();
 
-			var reviewer = _mapper.Map<PokemonDto>(_reviewerRepository.GetReviewer(reviewerId));
+			var reviewer = _mapper.Map<ReviewerDto>(_reviewerRepository.GetReviewer(reviewerId));
 
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState);
@@ -46,13 +46,13 @@ namespace PokemonReviewApp.Controllers
 			return Ok(reviewer);
 		}
 
-		[HttpGet("{reviewer}/reviews")]
+		[HttpGet("{reviewerId}/reviews")]
 		public IActionResult GetReviewsByAReviewer(int reviewerId)
 		{
 			if (!_reviewerRepository.ReviewerExists(reviewerId))
 				return NotFound();
 
-			var reviews = _mapper.Map<List<ReviewerDto>>(_reviewerRepository.GetReviewsByReviewer(reviewerId));
+			var reviews = _mapper.Map<List<ReviewDto>>(_reviewerRepository.GetReviewsByReviewer(reviewerId));
 
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState);
